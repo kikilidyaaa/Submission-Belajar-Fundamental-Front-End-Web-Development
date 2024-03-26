@@ -1,7 +1,11 @@
+import '../styles/style.css';
+
 const BASE_URL = 'https://notes-api.dicoding.dev/v2';
 
 const getNotes = async () => {
     try {
+        console.log('Mengambil catatan...');
+
         const response = await fetch(`${BASE_URL}/notes`);
         const responseJson = await response.json();
         
@@ -10,6 +14,8 @@ const getNotes = async () => {
         } else {
             renderNotes(responseJson.notes);
         }
+
+        console.log('Catatan berhasil diambil.');
     } catch (error) {
         showResponseMessage(error);
     }
@@ -58,32 +64,15 @@ function addNote() {
     }
 
     const noteObject = {
-        //id: `notes-${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}`, 
+        id: `notes-${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}`, 
         title: title, 
         body: body, 
-        //createdAt: new Date().toISOString(), 
+        createdAt: new Date().toISOString(), 
         archived: false,
     };
 
-//     try {
-//         const options = {
-//             method: 'POST',
-//             headers: {
-//             'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(note)
-//         };
-    
-//         const response = await fetch(`${BASE_URL}/notes`, options);
-//         const responseJson = await response.json();
-//         showResponseMessage(responseJson.message);
-//         getNotes();
-//     } catch (error) {
-//       showResponseMessage(error);
-//     }
-
     resetForm();
-    notesData.push(noteObject);
+    notes.push(noteObject);
     renderNotes();
 }
 
@@ -311,6 +300,10 @@ function renderNotes(notes) {
     });
 }
 
+const showResponseMessage = (message = 'Check your internet connection') => {
+    alert(message);
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     const submitForm = document.getElementById('inputNote');
     const searchForm = document.getElementById('searchNote');
@@ -324,8 +317,5 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         searchNote();
     });
-
     getNotes();
 });
-
-//renderNotes();
